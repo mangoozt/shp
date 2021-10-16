@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - ${PORT}:80
+    volumes:
+      - static-storage:/static:ro
+      - ./data/media:/media:ro
+    depends_on:
+      - web
+    restart: "always"
+#    command: [nginx-debug, '-g', 'daemon off;']
+
+  web:
+    build: .
+    command: sh -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn students_homework_portal.wsgi:application --bind=0.0.0.0:8000"
+    volumes:
+      - ./data:/code/data:rw
+      - ./data/media:/code/media:rw
+      - static-storage:/code/static:rw
+    env_file:
+      - ./local.env
+    expose:
+      - 8000
+    restart: "always"
+volumes:
+  static-storage:
