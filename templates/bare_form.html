@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% block content %}
+    <form method="post" enctype="multipart/form-data" class="col">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" class="btn">
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+    </script>
+{% endblock %}
