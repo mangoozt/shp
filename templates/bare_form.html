@@ -2,6 +2,8 @@
 {% block content %}
     <form method="post" enctype="multipart/form-data" class="col">
         {% csrf_token %}
+        {{ form.prev.errors }}
+        {{ form.prev }}
         {{ form }}
         <input type="submit" value="Submit" class="btn">
     </form>

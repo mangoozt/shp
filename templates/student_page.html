@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% block page_title %}
+    {{ student.name }}
+{% endblock %}
+{% block content %}
+    <div class="section">
+        <h5>{{ student.name }}:</h5>
+        <table>
+            <tr>
+                <th>Группа:</th>
+                <td>{{ student.group.name }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="section">
+        <h6>Домашние работы:</h6>
+        <div class="collection with-header">
+            {% for homework in student.homeworks.all %}
+                <a class="collection-item" href="#">{{ homework.hometask.name }}</a>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

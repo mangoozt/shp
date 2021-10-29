@@ -9,5 +9,5 @@ class UploadStudentsGroupCsv(forms.Form):
     file = forms.FileField()
 
 
-class FindStudentForm(forms.Form):
-    name = forms.CharField(label='Your name', max_length=100, required=True)
+class StudentSearchForm(forms.Form):
+    name = forms.CharField(label='', max_length=100, required=True)

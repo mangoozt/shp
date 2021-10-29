@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from rest_framework import viewsets, mixins, generics, filters
 import pandas as pd
 
-from homework.forms import UploadStudentsGroupCsv
+from homework.forms import UploadStudentsGroupCsv, StudentSearchForm
 from homework.models import Student, Homework, Group, HomeTask
 from homework.serializers import StudentSerializer, GroupSerializer, HomeworkSerializer, HometaskSerializer
 from rest_framework import permissions
@@ -27,6 +30,30 @@ def bulk_students_upload(request):
     else:
         form = UploadStudentsGroupCsv()
         return render(request, 'bare_form.html', {'form': form})
+
+
+def search_view(request):
+    if request.method == 'POST':
+        form = StudentSearchForm(request.POST, request.FILES)
+        if form.is_valid():
+            students = Student.objects.filter(name__contains=form.cleaned_data['name'])
+            if len(students) > 1:
+                return render(request, 'students_list.html', {'students': students})
+            elif len(students) > 0:
+                return HttpResponseRedirect(reverse('student_page', kwargs={"student_id": students[0].id}))
+            else:
+                form.add_error('name', 'Not found')
+    else:
+        form = StudentSearchForm(request.POST, request.FILES)
+
+    return render(request, 'bare_form.html', {'form': form})
+
+
+def student_page(request, student_id=None):
+    if student_id is not None:
+        student = get_object_or_404(Student, id=student_id)
+        return render(request, 'student_page.html', {'student': student})
+    return render(request, 'main.html')
 
 
 class StudentViewSet(mixins.CreateModelMixin,

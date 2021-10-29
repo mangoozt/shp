@@ -24,10 +24,11 @@ router.register(r'student', views.StudentViewSet)
 router.register(r'homework', views.HomeworkVeiwSet)
 router.register(r'hometask', views.HometaskViewSet)
 
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api', include(router.urls)),
+    path('', views.search_view),
     path('students', views.UserListView.as_view()),
+    path('student/<uuid:student_id>', views.student_page, name='student_page'),
     path('bulk_students_upload', views.bulk_students_upload),
     path('api-auth/', include('rest_framework.urls'))
 ]
