@@ -53,7 +53,14 @@ def student_page(request, student_id=None):
     if student_id is not None:
         student = get_object_or_404(Student, id=student_id)
         return render(request, 'student_page.html', {'student': student})
-    return render(request, 'main.html')
+    return HttpResponseRedirect(reverse('main'))
+
+
+def homework_page(request, homework_id=None):
+    if homework_id is not None:
+        homework = get_object_or_404(Homework, id=homework_id)
+        return render(request, 'homework_page.html', {'homework': homework})
+    return HttpResponseRedirect(reverse('main'))
 
 
 class StudentViewSet(mixins.CreateModelMixin,

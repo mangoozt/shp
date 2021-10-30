@@ -26,9 +26,10 @@ router.register(r'hometask', views.HometaskViewSet)
 
 urlpatterns = [
     path('api', include(router.urls)),
-    path('', views.search_view),
+    path('', views.search_view, name='main'),
     path('students', views.UserListView.as_view()),
     path('student/<uuid:student_id>', views.student_page, name='student_page'),
+    path('homework/<uuid:homework_id>', views.homework_page, name='homework_page'),
     path('bulk_students_upload', views.bulk_students_upload),
     path('api-auth/', include('rest_framework.urls'))
 ]

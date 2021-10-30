@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     <div class="section">
-        <h5>{{ student.name }}:</h5>
+        <h5>{{ student.name }}</h5>
         <table>
             <tr>
                 <th>Группа:</th>
@@ -16,7 +16,7 @@
         <h6>Домашние работы:</h6>
         <div class="collection with-header">
             {% for homework in student.homeworks.all %}
-                <a class="collection-item" href="#">{{ homework.hometask.name }}</a>
+                <a class="collection-item" href="{% url 'homework_page' homework_id=homework.id %}">{{ homework.hometask.name }}</a>
             {% endfor %}
         </div>
 

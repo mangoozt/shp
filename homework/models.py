@@ -1,7 +1,10 @@
+import json
+
 from django.db import models
 import uuid
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.html import escape
 from django_q.tasks import async_task
 
 
@@ -45,16 +48,39 @@ class Homework(models.Model):
     class Meta:
         unique_together = ['student', 'hometask']
 
+    def __str__(self):
+        return str(self.hometask.name + '-' + self.student.name)
+
 
 class TestAttempt(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(max_length=500)
     homework = models.ForeignKey(Homework, related_name='attempts', on_delete=models.deletion.SET_NULL, null=True)
     datetime = models.DateTimeField()
-    finished = models.DateTimeField(null=True)
-    log = models.TextField(max_length=5000)
+    finished = models.DateTimeField(blank=True, null=True)
+    log = models.TextField(max_length=5000, blank=True)
     passed = models.BooleanField(default=False)
     score = models.IntegerField()
+
+    @property
+    def nice_log(self):
+        try:
+            json_log = json.loads(self.log)
+            text = ''
+            i = 0
+            for test in json_log['tests']:
+                if "safe" in test and test["safe"] is True:
+                    test_name = test['name']
+                else:
+                    test_name = '#' + str(i)
+                    i += 1
+                text += f"{test_name:20}: {'Passed' if test['passed'] else 'Failed'} \n"
+                if "safe" in test and test["safe"] is True:
+                    if "message" in test:
+                        text += test["message"] + '\n'
+            return escape(text)
+        except:
+            return "Can't parse log"
 
 
 @receiver(post_save, sender=TestAttempt)

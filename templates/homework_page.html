@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+{% block page_title %}
+    {{ homework.student.name }} &mdash; {{ homework.hometask.name }}
+{% endblock %}
+{% block content %}
+    <div class="section">
+        <h4><a href="{% url 'student_page' student_id=homework.student.id %}">{{ homework.student.name }}</a>
+            &mdash; {{ homework.hometask.name }}</h4>
+        <table>
+            <tr>
+                <th>Репозиторий:</th>
+                <td><a href="{{ homework.git_repository_url }}">{{ homework.git_repository_url }}</a></td>
+            </tr>
+        </table>
+    </div>
+    <h5>Попытки тестирования:</h5>
+    <div class="section">
+        <ul class="collapsible">
+            {% for test in homework.attempts.all %}
+                <li>
+                    <div class="collapsible-header{% if test.passed %} green accent-2{% else %} deep-orange accent-2{% endif %}">
+                        <i class="material-icons">
+                            {% if test.passed %}check{% else %}clear{% endif %}
+                        </i>{{ test.datetime }}
+                    </div>
+                    <div class="collapsible-body{% if test.passed %} green accent-1{% else %} deep-orange accent-1{% endif %}">
+                        <pre>{{ test.nice_log }}</pre>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <style>
+        pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+    </script>
+{% endblock %}
