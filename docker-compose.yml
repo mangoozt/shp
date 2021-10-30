@@ -18,7 +18,7 @@ services:
     command: sh -c "python manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&
-      python mange.py qcluster &
+      python manage.py qcluster &
       gunicorn portal.wsgi:application --bind=0.0.0.0:8000"
     volumes:
       - ./data:/code/data:rw

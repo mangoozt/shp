@@ -17,4 +17,4 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt --no-cache-dir
 COPY . /code/
-ENTRYPOINT python /code/run_test.py
+#ENTRYPOINT python /code/run_test.py
