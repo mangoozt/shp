@@ -10,4 +10,5 @@ class UploadStudentsGroupCsv(forms.Form):
 
 
 class StudentSearchForm(forms.Form):
-    name = forms.CharField(label='', max_length=100, required=True)
+    name = forms.CharField(label='Фамилия', max_length=100, required=True,
+                           widget=forms.TextInput(attrs={'autocomplete': 'off'}))

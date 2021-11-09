@@ -46,7 +46,7 @@ def search_view(request):
     else:
         form = StudentSearchForm(request.POST, request.FILES)
 
-    return render(request, 'bare_form.html', {'form': form})
+    return render(request, 'search_form.html', {'form': form})
 
 
 def student_page(request, student_id=None):

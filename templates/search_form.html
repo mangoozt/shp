@@ -2,9 +2,9 @@
 {% block content %}
     <form method="post" enctype="multipart/form-data" class="col">
         {% csrf_token %}
-        {{ form }}
-        {{ form.prev }}
-        {{ form.prev.errors }}
+        <label for="{{ form.subject.id_for_label }}">Фамилия:</label>
+        {{ form.name }}
+        {{ form.name.errors }}
         <input type="submit" value="Submit" class="btn">
     </form>
     <script type="text/javascript">
