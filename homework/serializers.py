@@ -25,4 +25,4 @@ class HometaskSerializer(serializers.HyperlinkedModelSerializer):
 class HomeworkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Homework
-        fields = ['url', 'git_repository_url', 'student', 'hometask', 'attempts']
+        fields = ['url', 'git_repository_url', 'student', 'hometask']
