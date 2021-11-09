@@ -18,12 +18,12 @@
         <ul class="collapsible">
             {% for test in homework.attempts.all %}
                 <li>
-                    <div class="collapsible-header{% if test.passed %} green accent-2{% elif test.finished is None %} gray {% else %} deep-orange accent-2{% endif %}">
+                    <div class="collapsible-header{% if test.passed %} green{% elif test.finished is None %} gray{% else %} deep-orange{% endif %} accent-1">
                         <i class="material-icons">
                             {% if test.passed %}check{% elif test.finished is None %} av_timer {% else %}clear{% endif %}
                         </i>{% if test.finished is None %}Wait (from {{ test.datetime }}){% else %}{{ test.finished }}{% endif %}
                     </div>{% if test.finished is not None %}
-                    <div class="collapsible-body{% if test.passed %} green accent-1{% else %} deep-orange accent-1{% endif %}">
+                    <div class="collapsible-body">
                         <pre>{{ test.nice_log }}</pre>
                     </div>{% endif %}
                 </li>
