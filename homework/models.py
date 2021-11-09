@@ -52,15 +52,28 @@ class Homework(models.Model):
         return str(self.hometask.name + '-' + self.student.name)
 
 
+def test_number(hw):
+    present_keys = TestAttempt.objects.filter(homework=hw).order_by('-number').values_list('number', flat=True)
+    if present_keys:
+        return present_keys[0] + 1
+    else:
+        return 0
+
+
 class TestAttempt(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.TextField(max_length=500)
+    number = models.PositiveIntegerField()
     homework = models.ForeignKey(Homework, related_name='attempts', on_delete=models.deletion.SET_NULL, null=True)
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(auto_now_add=True)
     finished = models.DateTimeField(blank=True, null=True)
     log = models.TextField(max_length=5000, blank=True)
     passed = models.BooleanField(default=False)
-    score = models.IntegerField()
+    score = models.IntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        number = test_number(self.homework)
+        self.key = number
+        super(TestAttempt, self).save(*args, **kwargs)
 
     @property
     def nice_log(self):
@@ -87,4 +100,4 @@ class TestAttempt(models.Model):
 def queue_new_test(sender, instance: TestAttempt, **kwargs):
     if instance.finished is None:
         # tell everyone
-        async_task('tasks.run_test', instance)
+        async_task('homework.tasks.run_test', instance)

@@ -7,8 +7,15 @@ from homework.models import TestAttempt
 
 def run_test(test_instance: TestAttempt):
     homework = test_instance.homework
+    if homework.git_repository_url is None:
+        test_instance.finished = datetime.datetime.now()
+        test_instance.passed = False
+        test_instance.save()
+        return
     try:
-        finished = subprocess.run(homework.hometask.test_cmd.split(' '),
+
+        cmd = homework.hometask.test_cmd.replace('{git_repository_url}', homework.git_repository_url)
+        finished = subprocess.run(cmd.split(' '),
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, timeout=35)
 
         test_instance.finished = datetime.datetime.now()

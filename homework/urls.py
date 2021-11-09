@@ -30,6 +30,7 @@ urlpatterns = [
     path('students', views.UserListView.as_view()),
     path('student/<uuid:student_id>', views.student_page, name='student_page'),
     path('homework/<uuid:homework_id>', views.homework_page, name='homework_page'),
+    path('homework/<uuid:homework_id>/test', views.add_to_shopping_list, name='add_to_shopping_list'),
     path('bulk_students_upload', views.bulk_students_upload),
     path('api-auth/', include('rest_framework.urls'))
 ]
