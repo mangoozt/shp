@@ -7,7 +7,7 @@ from homework.models import TestAttempt
 
 def run_test(test_instance: TestAttempt):
     homework = test_instance.homework
-    if homework.git_repository_url is None:
+    if len(homework.git_repository_url) == 0 or homework.git_repository_url.isspace():
         test_instance.finished = datetime.datetime.now()
         test_instance.passed = False
         test_instance.save()
