@@ -69,6 +69,9 @@ class TestAttempt(models.Model):
     passed = models.BooleanField(default=False)
     score = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['-datetime', '-finished']
+
     def save(self, *args, **kwargs):
         super(TestAttempt, self).save(*args, **kwargs)
 
