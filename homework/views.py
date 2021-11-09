@@ -128,8 +128,9 @@ class UserListView(generics.ListAPIView):
 
 def new_test(request, homework_id=None):
     hw = get_object_or_404(Homework, id=homework_id)
-    if len(hw.attempts.filter(finished__isnull=True)) == 0:
-        new_attempt = TestAttempt(homework=hw)
-        new_attempt.save()
+    if len(hw.git_repository_url) != 0 and not hw.git_repository_url.isspace():
+        if len(hw.attempts.filter(finished__isnull=True)) == 0:
+            new_attempt = TestAttempt(homework=hw)
+            new_attempt.save()
 
     return HttpResponseRedirect(reverse('homework_page', kwargs={"homework_id": hw.id}))
