@@ -13,19 +13,19 @@
             </tr>
         </table>
     </div>
-    <h5>Попытки тестирования:</h5>
+    <h5>Попытки тестирования: <a href="{% url 'new_test' homework_id=homework.id %}" class="waves-effect waves-light btn right">Test</a></h5>
     <div class="section">
         <ul class="collapsible">
             {% for test in homework.attempts.all %}
                 <li>
-                    <div class="collapsible-header{% if test.passed %} green accent-2{% else %} deep-orange accent-2{% endif %}">
+                    <div class="collapsible-header{% if test.passed %} green accent-2{% elif test.finished is None %} gray {% else %} deep-orange accent-2{% endif %}">
                         <i class="material-icons">
-                            {% if test.passed %}check{% else %}clear{% endif %}
-                        </i>{{ test.datetime }}
-                    </div>
+                            {% if test.passed %}check{% elif test.finished is None %} av_timer {% else %}clear{% endif %}
+                        </i>{% if test.finished is None %}Wait (from {{ test.datetime }}){% else %}{{ test.finished }}{% endif %}
+                    </div>{% if test.finished is not None %}
                     <div class="collapsible-body{% if test.passed %} green accent-1{% else %} deep-orange accent-1{% endif %}">
                         <pre>{{ test.nice_log }}</pre>
-                    </div>
+                    </div>{% endif %}
                 </li>
             {% endfor %}
         </ul>

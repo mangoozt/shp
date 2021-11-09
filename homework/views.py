@@ -126,7 +126,7 @@ class UserListView(generics.ListAPIView):
     search_fields = ['name']
 
 
-def add_to_shopping_list(request, homework_id=None):
+def new_test(request, homework_id=None):
     hw = get_object_or_404(Homework, id=homework_id)
     if len(hw.attempts.filter(finished__isnull=True)) == 0:
         new_attempt = TestAttempt(homework=hw)

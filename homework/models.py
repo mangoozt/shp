@@ -62,7 +62,6 @@ def test_number(hw):
 
 class TestAttempt(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    number = models.PositiveIntegerField()
     homework = models.ForeignKey(Homework, related_name='attempts', on_delete=models.deletion.SET_NULL, null=True)
     datetime = models.DateTimeField(auto_now_add=True)
     finished = models.DateTimeField(blank=True, null=True)
@@ -71,8 +70,6 @@ class TestAttempt(models.Model):
     score = models.IntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        number = test_number(self.homework)
-        self.key = number
         super(TestAttempt, self).save(*args, **kwargs)
 
     @property

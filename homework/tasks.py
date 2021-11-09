@@ -19,12 +19,12 @@ def run_test(test_instance: TestAttempt):
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, timeout=35)
 
         test_instance.finished = datetime.datetime.now()
-        test_instance.log = finished.stdout
-        if finished.returncode == 0:
-            test_instance.passed = True if finished.returncode == 0 else False
+        test_instance.log = finished.stdout.decode()
 
         try:
-            test_instance.score = json.loads(finished.stdout)['score']
+            json_log = json.loads(test_instance.log)
+            test_instance.passed = json_log['passed']
+            test_instance.score = json_log['score']
         except:
             pass
 
