@@ -16,7 +16,7 @@ def run_test(test_instance: TestAttempt):
 
         cmd = homework.hometask.test_cmd.replace('{git_repository_url}', homework.git_repository_url)
         finished = subprocess.run(cmd.split(' '),
-                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, timeout=35)
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, timeout=300)
 
         test_instance.finished = datetime.datetime.now()
         test_instance.log = finished.stdout.decode()
