@@ -28,7 +28,7 @@ def run_test(test_instance: TestAttempt):
         except:
             pass
 
-    except TimeoutError:
+    except subprocess.TimeoutExpired:
         test_instance.finished = datetime.datetime.now()
         test_instance.passed = False
 
