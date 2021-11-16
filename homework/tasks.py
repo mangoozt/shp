@@ -21,7 +21,7 @@ def clone_repository(url, directory):
 
 
 def run_test(test_instance: TestAttempt):
-    with tempfile.TemporaryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory(prefix='data/tmp') as tmpdir:
         homework = test_instance.homework
         if len(homework.git_repository_url) == 0 or homework.git_repository_url.isspace():
             test_instance.finished = datetime.datetime.now()
