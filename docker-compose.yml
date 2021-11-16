@@ -7,7 +7,7 @@ services:
       - ${PORT}:80
     volumes:
       - static-storage:/static:ro
-      - ./data/media:/media:ro
+      - ${DATADIR}/media:/media:ro
     depends_on:
       - web
     restart: "always"
@@ -21,14 +21,26 @@ services:
       python manage.py qcluster &
       gunicorn portal.wsgi:application --bind=0.0.0.0:8000"
     volumes:
-      - ./data:/code/data:rw
-      - ./data/media:/code/media:rw
+      - ${DATADIR}:/code/data:rw
+      - ${DATADIR}/media:/code/media:rw
       - static-storage:/code/static:rw
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ./local.env
+    environment:
+      POSTGRES_HOST: db
     expose:
       - 8000
     restart: "always"
+
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./local.env
+    volumes:
+      - ${DATADIR}/postgres:/var/lib/postgresql/data:rw
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
 volumes:
   static-storage:

@@ -4,3 +4,4 @@ pandas
 djangorestframework
 django-filter
 django-q
+psycopg2==2.9.2
