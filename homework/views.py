@@ -36,9 +36,9 @@ def search_view(request):
     if request.method == 'POST':
         form = StudentSearchForm(request.POST, request.FILES)
         if form.is_valid():
-            students = Student.objects.filter(name__contains=form.cleaned_data['name'])
+            students = Student.objects.filter(name__icontains=form.cleaned_data['name'])
             if len(students) > 1:
-                return render(request, 'students_list.html', {'students': students})
+                form.add_error('name', 'Уточните запрос')
             elif len(students) > 0:
                 return HttpResponseRedirect(reverse('student_page', kwargs={"student_id": students[0].id}))
             else:
