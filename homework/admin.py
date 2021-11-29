@@ -23,7 +23,7 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 class AttemptsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'homework', 'datetime', 'finished', 'log', 'passed', 'score')
+    list_display = ('id', 'homework', 'datetime', 'finished', 'passed', 'score')
 
 
 class HomeworkAdmin(admin.ModelAdmin):
