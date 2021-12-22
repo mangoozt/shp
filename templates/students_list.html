@@ -1,12 +1,30 @@
 {% extends 'main.html' %}
+{% block nav %}
+    <nav>
+        <div class="nav-wrapper">
+            <div class="container">
+                <div class="col s12">
+
+                    <a href="{% url 'groups_list' %}" class="breadcrumb"> Группы</a>
+                    <a href="" class="breadcrumb">{{ group.name }}</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
 {% block content %}
     <div class="section">
-        <h5>Результаты тестирования алгоритма:</h5>
-        <div class="collection with-header">
-
-            {% for student in students %}
-                <a class="collection-item" href="{% url 'student_page' student_id=student.id %}">{{ student.name }}</a>
-            {% endfor %}
+        <h5>Passed: {{ total_passed }}&nbsp;/&nbsp;{{ students.count }}</h5>
+        <div class="section">
+            <ul class="collection">
+                {% for student in students %}
+                    <a class="collection-item{% if student.passed > 0 %} green lighten-4{% endif %}"
+                       href="{% url 'student_page' student_id=student.id %}">
+                    {{ forloop.counter }}.&nbsp;
+                        {{ student.name }}</a>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     <script type="text/javascript">

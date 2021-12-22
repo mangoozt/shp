@@ -31,6 +31,8 @@ urlpatterns = [
     path('student/<uuid:student_id>', views.student_page, name='student_page'),
     path('homework/<uuid:homework_id>', views.homework_page, name='homework_page'),
     path('homework/<uuid:homework_id>/test', views.new_test, name='new_test'),
+    path('groups', views.groups_list_page, name='groups_list'),
+    path('groups/<uuid:group_id>', views.group_page, name='group_page'),
     path('bulk_students_upload', views.bulk_students_upload),
     path('api-auth/', include('rest_framework.urls'))
 ]

@@ -63,6 +63,27 @@ def homework_page(request, homework_id=None):
     return HttpResponseRedirect(reverse('main'))
 
 
+def groups_list_page(request):
+    if request.user.is_superuser:
+        groups = Group.objects.all().order_by('name')
+        return render(request, 'groups_list.html', {'groups': groups})
+    else:
+        return HttpResponseRedirect(reverse('main'))
+
+
+def group_page(request, group_id):
+    if request.user.is_superuser:
+        group = get_object_or_404(Group, id=group_id)
+        from django.db.models import Count, Case, When
+        students = group.students.all().order_by('name').annotate(passed=Count(Case(When(homeworks__attempts__passed=True, then=1))))
+
+        total_passed = students.filter(passed__gt=0).count()
+        return render(request, 'students_list.html',
+                      {'group': group, 'students': students, 'total_passed': total_passed})
+    else:
+        return HttpResponseRedirect(reverse('main'))
+
+
 class StudentViewSet(mixins.CreateModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
