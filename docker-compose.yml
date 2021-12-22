@@ -18,7 +18,6 @@ services:
     command: sh -c "python manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&
-      python manage.py qcluster &
       gunicorn portal.wsgi:application --bind=0.0.0.0:8000"
     volumes:
       - ${DATADIR}:/code/data:rw
@@ -31,6 +30,20 @@ services:
       POSTGRES_HOST: db
     expose:
       - 8000
+    restart: "always"
+
+  qcluster:
+    build: .
+    command: sh -c "python manage.py qcluster"
+    volumes:
+      - ${DATADIR}:/code/data:rw
+      - ${DATADIR}/media:/code/media:rw
+      - static-storage:/code/static:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ./local.env
+    environment:
+      POSTGRES_HOST: db
     restart: "always"
 
   db:
