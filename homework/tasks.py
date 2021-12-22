@@ -8,9 +8,11 @@ from homework.models import TestAttempt
 
 def call_subprocess(m):
     def f(*args, **kwargs):
-        cp = m(*args, **kwargs)
-        return cp.returncode == 0, cp.stderr
-
+        try:
+            cp = m(*args, **kwargs)
+            return cp.returncode == 0, cp.stderr
+        except subprocess.TimeoutExpired:
+            return False, cp.stderr
     return f
 
 
